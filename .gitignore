@@ -1,0 +1,7 @@
+node_modules/
+.run/
+.venv/
+.pytest_cache/
+.cursor/
+*.log
+.DS_Store

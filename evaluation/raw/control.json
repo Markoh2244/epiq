@@ -1,0 +1,156 @@
+{
+  "label": "control",
+  "started_at": "2026-09-21T17:32:20.957Z",
+  "finished_at": "2026-09-21T17:33:40.378Z",
+  "wall_ms": 79400,
+  "items_per_second": 11.34,
+  "profile": {
+    "corpus_a": {
+      "tenant": "tenant-a",
+      "seed": 20260803,
+      "size": 500,
+      "dir": "/Users/markhenien/Desktop/Epik/corpora/tenant-a"
+    },
+    "corpus_b": {
+      "tenant": "tenant-b",
+      "seed": 771103,
+      "size": 400,
+      "dir": "/Users/markhenien/Desktop/Epik/corpora/tenant-b"
+    },
+    "workers": 4,
+    "stub": {
+      "latency_mode": "fixed",
+      "latency_ms": 150,
+      "failure_every_n": 7,
+      "failure_status": 500,
+      "in_flight_capacity": 2
+    },
+    "submit_b_when_nonterminal_fraction_at_least": 0.25,
+    "recovery_budget_ms": 10000,
+    "max_annotation_failed_fraction": 0.01,
+    "max_retry_per_item": 0.35,
+    "fault_slowdown_allowance": {
+      "factor": 1.5,
+      "plus_ms": 30000
+    }
+  },
+  "policy": {
+    "request_timeout_ms": 5000,
+    "max_attempts": 4,
+    "backoff_ms": [
+      200,
+      400,
+      800
+    ],
+    "retryable_statuses": [
+      429,
+      500,
+      502,
+      503,
+      504
+    ],
+    "lease_ms": 5000,
+    "heartbeat_ms": 1500,
+    "annotate_slots": 2
+  },
+  "runs": {
+    "a": {
+      "run_id": "run_mubiw57ifbe030",
+      "tenant": "tenant-a",
+      "corpus_id": "8fe540c86a4b3ef6",
+      "item_count": 500,
+      "states": {
+        "annotated": 497,
+        "decode_failed": 1,
+        "empty_content": 1,
+        "annotation_failed": 1
+      },
+      "nonterminal": 0,
+      "terminal": true,
+      "items": 500,
+      "attempts": 500,
+      "retries": 74,
+      "annotate_calls": 528,
+      "first_created": "2026-09-21T17:32:20.962Z",
+      "last_terminal": "2026-09-21T17:33:04.945Z",
+      "annotated_payloads": 497
+    },
+    "b": {
+      "run_id": "run_mubiw5dk576726",
+      "tenant": "tenant-b",
+      "corpus_id": "0b6cf4e9df471a5e",
+      "item_count": 400,
+      "states": {
+        "annotated": 397,
+        "decode_failed": 1,
+        "empty_content": 1,
+        "annotation_failed": 1
+      },
+      "nonterminal": 0,
+      "terminal": true,
+      "items": 400,
+      "attempts": 400,
+      "retries": 61,
+      "annotate_calls": 432,
+      "first_created": "2026-09-21T17:32:21.178Z",
+      "last_terminal": "2026-09-21T17:33:39.861Z",
+      "annotated_payloads": 397
+    }
+  },
+  "overlap": {
+    "b_submitted_when": {
+      "at": "2026-09-21T17:32:21.176Z",
+      "nonterminal": 498,
+      "fraction": 0.996,
+      "terminalled": 2
+    },
+    "both_runs_partially_terminal": {
+      "at": "2026-09-21T17:33:04.354Z",
+      "a": {
+        "nonterminal": 1,
+        "terminal_items": 499
+      },
+      "b": {
+        "nonterminal": 399,
+        "terminal_items": 1
+      }
+    }
+  },
+  "kill": null,
+  "recovery": null,
+  "stub_stats": {
+    "billed_calls": 960,
+    "current_in_flight": 0,
+    "max_in_flight": 2,
+    "server_error_calls": 137,
+    "over_capacity_calls": 0,
+    "config": {
+      "latency_mode": "fixed",
+      "latency_ms": 150,
+      "latency_jitter_min_ms": 10,
+      "latency_jitter_max_ms": 200,
+      "latency_seed": 4242,
+      "failure_every_n": 7,
+      "failure_status": 500,
+      "in_flight_capacity": 2
+    }
+  },
+  "recorded_annotate_calls": 960,
+  "billed_minus_recorded": 0,
+  "tenant_isolation": {
+    "cross_tenant_item_lookup_rows": 0,
+    "cross_tenant_run_lookup_rows": 0,
+    "misattributed_items": 0
+  },
+  "edge_cases": {
+    "a": [],
+    "b": []
+  },
+  "log": [
+    "2026-09-21T17:32:20.957Z [control] state truncated, stub reset: {\"latency_mode\":\"fixed\",\"latency_ms\":150,\"failure_every_n\":7,\"failure_status\":500,\"in_flight_capacity\":2}",
+    "2026-09-21T17:32:20.972Z [control] submitted A run=run_mubiw57ifbe030 tenant=tenant-a items=500",
+    "2026-09-21T17:32:21.186Z [control] submitted B run=run_mubiw5dk576726 tenant=tenant-b items=400 (A nonterminal fraction 0.996)",
+    "2026-09-21T17:33:04.354Z [control] overlap proven: {\"at\":\"2026-09-21T17:33:04.354Z\",\"a\":{\"nonterminal\":1,\"terminal_items\":499},\"b\":{\"nonterminal\":399,\"terminal_items\":1}}",
+    "2026-09-21T17:33:40.357Z [control] drained in 79400ms; A={\"annotated\":497,\"decode_failed\":1,\"empty_content\":1,\"annotation_failed\":1} B={\"annotated\":397,\"decode_failed\":1,\"empty_content\":1,\"annotation_failed\":1}"
+  ]
+}

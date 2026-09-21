@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Unified command interface (section 2a). Thin wrapper over src/cli.ts.
+set -euo pipefail
+cd "$(dirname "$0")"
+
+if [ ! -d node_modules ]; then
+  echo "installing dependencies (one time, needs network)..." >&2
+  npm install --silent
+fi
+
+exec ./node_modules/.bin/tsx src/cli.ts "$@"

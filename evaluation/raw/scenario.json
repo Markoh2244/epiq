@@ -1,0 +1,345 @@
+{
+  "verdict": "PASS",
+  "generated_at": "2026-09-21T17:35:00.711Z",
+  "profile": {
+    "corpus_a": {
+      "tenant": "tenant-a",
+      "seed": 20260803,
+      "size": 500,
+      "dir": "/Users/markhenien/Desktop/Epik/corpora/tenant-a"
+    },
+    "corpus_b": {
+      "tenant": "tenant-b",
+      "seed": 771103,
+      "size": 400,
+      "dir": "/Users/markhenien/Desktop/Epik/corpora/tenant-b"
+    },
+    "workers": 4,
+    "stub": {
+      "latency_mode": "fixed",
+      "latency_ms": 150,
+      "failure_every_n": 7,
+      "failure_status": 500,
+      "in_flight_capacity": 2
+    },
+    "submit_b_when_nonterminal_fraction_at_least": 0.25,
+    "recovery_budget_ms": 10000,
+    "max_annotation_failed_fraction": 0.01,
+    "max_retry_per_item": 0.35,
+    "fault_slowdown_allowance": {
+      "factor": 1.5,
+      "plus_ms": 30000
+    }
+  },
+  "policy": {
+    "request_timeout_ms": 5000,
+    "max_attempts": 4,
+    "backoff_ms": [
+      200,
+      400,
+      800
+    ],
+    "retryable_statuses": [
+      429,
+      500,
+      502,
+      503,
+      504
+    ],
+    "lease_ms": 5000,
+    "heartbeat_ms": 1500,
+    "annotate_slots": 2
+  },
+  "assertions": [
+    {
+      "id": "REQ-1.1/control: every item terminal",
+      "mandatory": true,
+      "pass": true,
+      "reason": "A={\"annotated\":497,\"decode_failed\":1,\"empty_content\":1,\"annotation_failed\":1} B={\"annotated\":397,\"decode_failed\":1,\"empty_content\":1,\"annotation_failed\":1}"
+    },
+    {
+      "id": "CORPUS-REQ-4/control: edge cases hit their outcomes without annotation",
+      "mandatory": true,
+      "pass": true,
+      "reason": "empty_content + decode_failed exact, 0 annotation calls"
+    },
+    {
+      "id": "REQ-2.2/control: one shared limit (max_in_flight<=2, over_capacity_calls==0)",
+      "mandatory": true,
+      "pass": true,
+      "reason": "max_in_flight=2 over_capacity_calls=0"
+    },
+    {
+      "id": "REQ-2.2/control: counters reconcile with item outcomes",
+      "mandatory": true,
+      "pass": true,
+      "reason": "billed=960 recorded=960 delta=0 server_errors=137 (expected 137)"
+    },
+    {
+      "id": "REQ-2.2/control: retries within documented policy (<=4 attempts per pass)",
+      "mandatory": true,
+      "pass": true,
+      "reason": "retries A=74 B=61"
+    },
+    {
+      "id": "REQ-2.3/control: two tenants overlap on the profile timing",
+      "mandatory": true,
+      "pass": true,
+      "reason": "B submitted with 0.996 of A nonterminal; both-partially-terminal observation: {\"at\":\"2026-09-21T17:33:04.354Z\",\"a\":{\"nonterminal\":1,\"terminal_items\":499},\"b\":{\"nonterminal\":399,\"terminal_items\":1}}"
+    },
+    {
+      "id": "REQ-2.3/control: attribution + cross-tenant lookups return not found",
+      "mandatory": true,
+      "pass": true,
+      "reason": "{\"cross_tenant_item_lookup_rows\":0,\"cross_tenant_run_lookup_rows\":0,\"misattributed_items\":0}"
+    },
+    {
+      "id": "D-06/control: annotation_failed <= 1%",
+      "mandatory": false,
+      "pass": true,
+      "reason": "annotation_failed fraction 0.0022"
+    },
+    {
+      "id": "D-06/control: retry amplification <= 0.35/item",
+      "mandatory": false,
+      "pass": true,
+      "reason": "retries per item 0.150"
+    },
+    {
+      "id": "REQ-1.1/fault: every item terminal",
+      "mandatory": true,
+      "pass": true,
+      "reason": "A={\"annotated\":498,\"decode_failed\":1,\"empty_content\":1} B={\"annotated\":398,\"decode_failed\":1,\"empty_content\":1}"
+    },
+    {
+      "id": "CORPUS-REQ-4/fault: edge cases hit their outcomes without annotation",
+      "mandatory": true,
+      "pass": true,
+      "reason": "empty_content + decode_failed exact, 0 annotation calls"
+    },
+    {
+      "id": "REQ-2.2/fault: one shared limit (max_in_flight<=2, over_capacity_calls==0)",
+      "mandatory": true,
+      "pass": true,
+      "reason": "max_in_flight=2 over_capacity_calls=0"
+    },
+    {
+      "id": "REQ-2.2/fault: counters reconcile with item outcomes",
+      "mandatory": true,
+      "pass": true,
+      "reason": "billed=957 recorded=957 delta=0 server_errors=136 (expected 136)"
+    },
+    {
+      "id": "REQ-2.2/fault: retries within documented policy (<=4 attempts per pass)",
+      "mandatory": true,
+      "pass": true,
+      "reason": "retries A=76 B=60"
+    },
+    {
+      "id": "REQ-2.3/fault: two tenants overlap on the profile timing",
+      "mandatory": true,
+      "pass": true,
+      "reason": "B submitted with 0.994 of A nonterminal; both-partially-terminal observation: {\"at\":\"2026-09-21T17:34:24.959Z\",\"a\":{\"nonterminal\":2,\"terminal_items\":498},\"b\":{\"nonterminal\":399,\"terminal_items\":1}}"
+    },
+    {
+      "id": "REQ-2.3/fault: attribution + cross-tenant lookups return not found",
+      "mandatory": true,
+      "pass": true,
+      "reason": "{\"cross_tenant_item_lookup_rows\":0,\"cross_tenant_run_lookup_rows\":0,\"misattributed_items\":0}"
+    },
+    {
+      "id": "D-06/fault: annotation_failed <= 1%",
+      "mandatory": false,
+      "pass": true,
+      "reason": "annotation_failed fraction 0.0000"
+    },
+    {
+      "id": "D-06/fault: retry amplification <= 0.35/item",
+      "mandatory": false,
+      "pass": true,
+      "reason": "retries per item 0.151"
+    },
+    {
+      "id": "REQ-2.2/fault: killed worker owned a nonterminal item",
+      "mandatory": true,
+      "pass": true,
+      "reason": "owned=[{\"item_id\":\"run_mubixutv14b8f2-i0500\",\"run_id\":\"run_mubixutv14b8f2\",\"tenant\":\"tenant-a\",\"state\":\"processing\"}]"
+    },
+    {
+      "id": "REQ-2.2/fault: killed worker stays dead, unreplaced",
+      "mandatory": true,
+      "pass": true,
+      "reason": "live after kill: [\"w1-90564\",\"w2-90566\",\"w3-90563\"]"
+    },
+    {
+      "id": "REQ-2.2/fault: work resumes elsewhere within 10000ms",
+      "mandatory": true,
+      "pass": true,
+      "reason": "max_resume_ms=4736 per item {\"run_mubixutv14b8f2-i0500\":4736}"
+    },
+    {
+      "id": "REQ-2.2/fault: kill landed while both runs had nonterminal items",
+      "mandatory": true,
+      "pass": true,
+      "reason": "{\"at\":\"2026-09-21T17:34:24.959Z\",\"a\":{\"nonterminal\":2,\"terminal_items\":498},\"b\":{\"nonterminal\":399,\"terminal_items\":1}}"
+    },
+    {
+      "id": "REQ-2.4: billed calls reported for both executions with the delta explained",
+      "mandatory": true,
+      "pass": true,
+      "reason": "control=960 fault=957 delta=-3 (the kill changes claim and retry timing; with every-N failure scheduling and tenant-scoped cache hits, the exact billed total is not expected to be identical)"
+    },
+    {
+      "id": "D-06: fault wall clock <= control*1.5+30000ms",
+      "mandatory": false,
+      "pass": true,
+      "reason": "control=79400ms fault=79858ms allowance=149100ms"
+    }
+  ],
+  "billed_calls": {
+    "control": 960,
+    "fault": 957,
+    "delta": -3
+  },
+  "executions": {
+    "control": {
+      "wall_ms": 79400,
+      "items_per_second": 11.34,
+      "runs": {
+        "a": {
+          "run_id": "run_mubiw57ifbe030",
+          "tenant": "tenant-a",
+          "corpus_id": "8fe540c86a4b3ef6",
+          "item_count": 500,
+          "states": {
+            "annotated": 497,
+            "decode_failed": 1,
+            "empty_content": 1,
+            "annotation_failed": 1
+          },
+          "nonterminal": 0,
+          "terminal": true,
+          "items": 500,
+          "attempts": 500,
+          "retries": 74,
+          "annotate_calls": 528,
+          "first_created": "2026-09-21T17:32:20.962Z",
+          "last_terminal": "2026-09-21T17:33:04.945Z",
+          "annotated_payloads": 497
+        },
+        "b": {
+          "run_id": "run_mubiw5dk576726",
+          "tenant": "tenant-b",
+          "corpus_id": "0b6cf4e9df471a5e",
+          "item_count": 400,
+          "states": {
+            "annotated": 397,
+            "decode_failed": 1,
+            "empty_content": 1,
+            "annotation_failed": 1
+          },
+          "nonterminal": 0,
+          "terminal": true,
+          "items": 400,
+          "attempts": 400,
+          "retries": 61,
+          "annotate_calls": 432,
+          "first_created": "2026-09-21T17:32:21.178Z",
+          "last_terminal": "2026-09-21T17:33:39.861Z",
+          "annotated_payloads": 397
+        }
+      },
+      "stub_stats": {
+        "billed_calls": 960,
+        "current_in_flight": 0,
+        "max_in_flight": 2,
+        "server_error_calls": 137,
+        "over_capacity_calls": 0,
+        "config": {
+          "latency_mode": "fixed",
+          "latency_ms": 150,
+          "latency_jitter_min_ms": 10,
+          "latency_jitter_max_ms": 200,
+          "latency_seed": 4242,
+          "failure_every_n": 7,
+          "failure_status": 500,
+          "in_flight_capacity": 2
+        }
+      }
+    },
+    "fault": {
+      "wall_ms": 79858,
+      "items_per_second": 11.27,
+      "runs": {
+        "a": {
+          "run_id": "run_mubixutv14b8f2",
+          "tenant": "tenant-a",
+          "corpus_id": "8fe540c86a4b3ef6",
+          "item_count": 500,
+          "states": {
+            "annotated": 498,
+            "decode_failed": 1,
+            "empty_content": 1
+          },
+          "nonterminal": 0,
+          "terminal": true,
+          "items": 500,
+          "attempts": 501,
+          "retries": 76,
+          "annotate_calls": 535,
+          "first_created": "2026-09-21T17:33:40.823Z",
+          "last_terminal": "2026-09-21T17:34:29.760Z",
+          "annotated_payloads": 498
+        },
+        "b": {
+          "run_id": "run_mubixv5l8ba1cc",
+          "tenant": "tenant-b",
+          "corpus_id": "0b6cf4e9df471a5e",
+          "item_count": 400,
+          "states": {
+            "annotated": 398,
+            "decode_failed": 1,
+            "empty_content": 1
+          },
+          "nonterminal": 0,
+          "terminal": true,
+          "items": 400,
+          "attempts": 400,
+          "retries": 60,
+          "annotate_calls": 422,
+          "first_created": "2026-09-21T17:33:41.244Z",
+          "last_terminal": "2026-09-21T17:35:00.525Z",
+          "annotated_payloads": 398
+        }
+      },
+      "stub_stats": {
+        "billed_calls": 957,
+        "current_in_flight": 0,
+        "max_in_flight": 2,
+        "server_error_calls": 136,
+        "over_capacity_calls": 0,
+        "config": {
+          "latency_mode": "fixed",
+          "latency_ms": 150,
+          "latency_jitter_min_ms": 10,
+          "latency_jitter_max_ms": 200,
+          "latency_seed": 4242,
+          "failure_every_n": 7,
+          "failure_status": 500,
+          "in_flight_capacity": 2
+        }
+      },
+      "recovery": {
+        "killed_at": "2026-09-21T17:34:24.966Z",
+        "owned_items": [
+          "run_mubixutv14b8f2-i0500"
+        ],
+        "resume_ms_per_item": {
+          "run_mubixutv14b8f2-i0500": 4736
+        },
+        "max_resume_ms": 4736,
+        "all_resumed": true
+      }
+    }
+  }
+}

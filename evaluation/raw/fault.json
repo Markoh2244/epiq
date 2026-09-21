@@ -1,0 +1,186 @@
+{
+  "label": "fault",
+  "started_at": "2026-09-21T17:33:40.818Z",
+  "finished_at": "2026-09-21T17:35:00.692Z",
+  "wall_ms": 79858,
+  "items_per_second": 11.27,
+  "profile": {
+    "corpus_a": {
+      "tenant": "tenant-a",
+      "seed": 20260803,
+      "size": 500,
+      "dir": "/Users/markhenien/Desktop/Epik/corpora/tenant-a"
+    },
+    "corpus_b": {
+      "tenant": "tenant-b",
+      "seed": 771103,
+      "size": 400,
+      "dir": "/Users/markhenien/Desktop/Epik/corpora/tenant-b"
+    },
+    "workers": 4,
+    "stub": {
+      "latency_mode": "fixed",
+      "latency_ms": 150,
+      "failure_every_n": 7,
+      "failure_status": 500,
+      "in_flight_capacity": 2
+    },
+    "submit_b_when_nonterminal_fraction_at_least": 0.25,
+    "recovery_budget_ms": 10000,
+    "max_annotation_failed_fraction": 0.01,
+    "max_retry_per_item": 0.35,
+    "fault_slowdown_allowance": {
+      "factor": 1.5,
+      "plus_ms": 30000
+    }
+  },
+  "policy": {
+    "request_timeout_ms": 5000,
+    "max_attempts": 4,
+    "backoff_ms": [
+      200,
+      400,
+      800
+    ],
+    "retryable_statuses": [
+      429,
+      500,
+      502,
+      503,
+      504
+    ],
+    "lease_ms": 5000,
+    "heartbeat_ms": 1500,
+    "annotate_slots": 2
+  },
+  "runs": {
+    "a": {
+      "run_id": "run_mubixutv14b8f2",
+      "tenant": "tenant-a",
+      "corpus_id": "8fe540c86a4b3ef6",
+      "item_count": 500,
+      "states": {
+        "annotated": 498,
+        "decode_failed": 1,
+        "empty_content": 1
+      },
+      "nonterminal": 0,
+      "terminal": true,
+      "items": 500,
+      "attempts": 501,
+      "retries": 76,
+      "annotate_calls": 535,
+      "first_created": "2026-09-21T17:33:40.823Z",
+      "last_terminal": "2026-09-21T17:34:29.760Z",
+      "annotated_payloads": 498
+    },
+    "b": {
+      "run_id": "run_mubixv5l8ba1cc",
+      "tenant": "tenant-b",
+      "corpus_id": "0b6cf4e9df471a5e",
+      "item_count": 400,
+      "states": {
+        "annotated": 398,
+        "decode_failed": 1,
+        "empty_content": 1
+      },
+      "nonterminal": 0,
+      "terminal": true,
+      "items": 400,
+      "attempts": 400,
+      "retries": 60,
+      "annotate_calls": 422,
+      "first_created": "2026-09-21T17:33:41.244Z",
+      "last_terminal": "2026-09-21T17:35:00.525Z",
+      "annotated_payloads": 398
+    }
+  },
+  "overlap": {
+    "b_submitted_when": {
+      "at": "2026-09-21T17:33:41.240Z",
+      "nonterminal": 497,
+      "fraction": 0.994,
+      "terminalled": 3
+    },
+    "both_runs_partially_terminal": {
+      "at": "2026-09-21T17:34:24.959Z",
+      "a": {
+        "nonterminal": 2,
+        "terminal_items": 498
+      },
+      "b": {
+        "nonterminal": 399,
+        "terminal_items": 1
+      }
+    }
+  },
+  "kill": {
+    "killed": {
+      "worker_id": "w0-93097",
+      "pid": 93097,
+      "index": 0
+    },
+    "owned_nonterminal_items": [
+      {
+        "item_id": "run_mubixutv14b8f2-i0500",
+        "run_id": "run_mubixutv14b8f2",
+        "tenant": "tenant-a",
+        "state": "processing"
+      }
+    ],
+    "killed_at": "2026-09-21T17:34:24.966Z",
+    "live_workers_after": [
+      "w1-90564",
+      "w2-90566",
+      "w3-90563"
+    ]
+  },
+  "recovery": {
+    "killed_at": "2026-09-21T17:34:24.966Z",
+    "owned_items": [
+      "run_mubixutv14b8f2-i0500"
+    ],
+    "resume_ms_per_item": {
+      "run_mubixutv14b8f2-i0500": 4736
+    },
+    "max_resume_ms": 4736,
+    "all_resumed": true
+  },
+  "stub_stats": {
+    "billed_calls": 957,
+    "current_in_flight": 0,
+    "max_in_flight": 2,
+    "server_error_calls": 136,
+    "over_capacity_calls": 0,
+    "config": {
+      "latency_mode": "fixed",
+      "latency_ms": 150,
+      "latency_jitter_min_ms": 10,
+      "latency_jitter_max_ms": 200,
+      "latency_seed": 4242,
+      "failure_every_n": 7,
+      "failure_status": 500,
+      "in_flight_capacity": 2
+    }
+  },
+  "recorded_annotate_calls": 957,
+  "billed_minus_recorded": 0,
+  "tenant_isolation": {
+    "cross_tenant_item_lookup_rows": 0,
+    "cross_tenant_run_lookup_rows": 0,
+    "misattributed_items": 0
+  },
+  "edge_cases": {
+    "a": [],
+    "b": []
+  },
+  "log": [
+    "2026-09-21T17:33:40.818Z [fault] state truncated, stub reset: {\"latency_mode\":\"fixed\",\"latency_ms\":150,\"failure_every_n\":7,\"failure_status\":500,\"in_flight_capacity\":2}",
+    "2026-09-21T17:33:40.832Z [fault] submitted A run=run_mubixutv14b8f2 tenant=tenant-a items=500",
+    "2026-09-21T17:33:41.256Z [fault] submitted B run=run_mubixv5l8ba1cc tenant=tenant-b items=400 (A nonterminal fraction 0.994)",
+    "2026-09-21T17:34:24.959Z [fault] overlap proven: {\"at\":\"2026-09-21T17:34:24.959Z\",\"a\":{\"nonterminal\":2,\"terminal_items\":498},\"b\":{\"nonterminal\":399,\"terminal_items\":1}}",
+    "2026-09-21T17:34:24.966Z [fault] killed w0-93097 owning 1 nonterminal item(s)",
+    "2026-09-21T17:34:29.702Z [fault] resumed elsewhere: {\"run_mubixutv14b8f2-i0500\":4736}",
+    "2026-09-21T17:35:00.676Z [fault] drained in 79858ms; A={\"annotated\":498,\"decode_failed\":1,\"empty_content\":1} B={\"annotated\":398,\"decode_failed\":1,\"empty_content\":1}"
+  ]
+}
